@@ -1,6 +1,6 @@
 # Realo API PHP Library
 
-The official PHP library for using [the Realo REST API](https://api.realo.com/docs).
+A PHP library for using [the Realo REST API](https://api.realo.com/docs).
 
 Before using this library, you must have a valid API Key. To get an API Key, please contact your Realo customer success manager.
 
@@ -13,23 +13,13 @@ The recommended way to install the Realo PHP API client is through [composer](ht
 Next, run the `composer` command to install the Realo PHP API client:
 
 ```bash
-composer require realo/api-client
+composer require fw4/realo-api-client
 ```
 
 After installing, you need to require Composer's autoloader:
 
 ```php
 require_once __DIR__ . '/vendor/autoload.php';
-```
-
-### As a Phar
-
-You may download a ready-to-use version of the Realo API client library as a Phar from our [releases](https://github.com/realo-com/api-client/releases). This includes the API client and all its dependencies.
-
-After downloading, you need to require the bundled autoloader:
-
-```php
-require_once 'phar://' . __DIR__ . '/realo-api-client.phar/vendor/autoload.php';
 ```
 
 ## Initialization
