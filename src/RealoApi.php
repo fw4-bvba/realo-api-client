@@ -2,6 +2,7 @@
 
 namespace Realo\Api;
 
+use CurlHandle;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -139,7 +140,7 @@ class RealoApi
      * @param array $headers
      * @return Request
      */
-    public function buildRequest($path, $method = 'GET', array $payload = null, array $headers = [])
+    public function buildRequest($path, $method = 'GET', ?array $payload = null, array $headers = [])
     {
         // Create request
         $headers['Content-Type'] = 'application/json';
@@ -164,7 +165,7 @@ class RealoApi
      * @return mixed
      * @throws RealoApiException
      */
-    public function request($path, $method = 'GET', array $payload = null, array $headers = [])
+    public function request($path, $method = 'GET', ?array $payload = null, array $headers = [])
     {
         $request = $this->buildRequest($path, $method, $payload, $headers);
 
@@ -178,38 +179,12 @@ class RealoApi
         return $this->decodeResponse($response);
     }
 
-//    /**
-//     * @param Request[] $requests
-//     * @return mixed[]
-//     * @throws RealoApiException
-//     */
-//    public function doMultipleRequests(array $requests)
-//    {
-//        try {
-//            $responses = $this->client->send($requests);
-//        } catch (RequestException $e) {
-//            throw new RealoApiException($e);
-//        }
-//
-//        return array_map([$this, 'decodeResponse'], $responses);
-//    }
-
     /**
      * @param array $requests ['path', 'method', 'params', 'headers']
      * @return array [http_code, body]
      */
     public function multiRequest($requests)
     {
-        //Using Guzzle is disabled because of version conflict
-//        $guzzleRequests = [];
-//        foreach ($requests as $request) {
-//            $guzzleRequest = $this->buildRequest($request['path'], $request['method'], isset($request['params']) ? $request['params'] : null, isset($request['headers']) ? $request['headers'] : []);
-//            $guzzleRequests[] = $guzzleRequest;
-//        }
-//
-//        return $this->doMultipleRequests($guzzleRequests);
-
-        //Use curl instead
         $arrCurls = [];
         $resMultiCurl = curl_multi_init();
         $arrReturn = [];
@@ -247,9 +222,9 @@ class RealoApi
      * @param string $method
      * @param array|null $payload
      * @param array $headers
-     * @return resource
+     * @return resource|CurlHandle
      */
-    protected function buildCurlRequest($path, $method = 'GET', array $payload = null, array $headers = [])
+    protected function buildCurlRequest($path, $method = 'GET', ?array $payload = null, array $headers = [])
     {
         // Create request
         $headers['Content-Type'] = 'application/json';
